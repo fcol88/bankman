@@ -31,6 +31,11 @@ public class DescriptionService implements IDescriptionService {
 	}
 	
 	@Override
+	public int getUnidentifiedDescriptionCount() {
+		return descriptionRepository.countByCategoryIsNull();
+	}
+	
+	@Override
 	public Description getNextUnidentifiedDescription() {
 		
 		Optional<Description> description = descriptionRepository.findFirstByCategoryIsNull();

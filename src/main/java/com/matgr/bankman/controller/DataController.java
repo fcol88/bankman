@@ -32,6 +32,7 @@ public class DataController {
 		Description description = descriptionService.getNextUnidentifiedDescription();
 		model.addObject("description", description);
 		model.addObject("categories", categoryService.findAll());
+		model.addObject("remaining", descriptionService.getUnidentifiedDescriptionCount());
 		if(description != null) {
 			model.addObject("sift", new SiftDTO(description));
 		}
@@ -49,6 +50,7 @@ public class DataController {
 			Description description = descriptionService.getNextUnidentifiedDescription();
 			model.addObject("description", description);
 			model.addObject("categories", categoryService.findAll());
+			model.addObject("remaining", descriptionService.getUnidentifiedDescriptionCount());
 			model.setViewName("data/sift");
 			return model;
 		}

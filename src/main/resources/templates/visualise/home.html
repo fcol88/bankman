@@ -71,17 +71,18 @@
 									th:text="${#temporals.format(visualisation.to, 'dd/MM/yyyy')}"></th:block>
 							</h2>
 							<table class="table is-striped is-fullwidth">
+								<caption></caption>
 								<thead>
 									<tr>
-										<th><a style="color: hsl(229deg, 53%, 53%);"
+										<th scope="col"><a style="color: hsl(229deg, 53%, 53%);"
 											th:if="${param.sort == null || param.sort[0] != '1'}"
 											th:href="@{sort(sort=1)}">Category</a> <th:block
 												th:unless="${param.sort == null || param.sort[0] != '1'}">Category</th:block></th>
-										<th><a style="color: hsl(229deg, 53%, 53%);"
+										<th scope="col"><a style="color: hsl(229deg, 53%, 53%);"
 											th:if="${param.sort == null || param.sort[0] != '0'}"
 											th:href="@{sort(sort=0)}">Amount Spent</a> <th:block
 												th:unless="${param.sort == null || param.sort[0] != '0'}">Amount Spent</th:block></th>
-										<th>Percentage of Total</th>
+										<th scope="col">Percentage of Total</th>
 									</tr>
 								</thead>
 								<tbody>

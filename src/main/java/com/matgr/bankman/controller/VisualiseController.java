@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.matgr.bankman.dto.CategoryVisualisationDTO;
@@ -75,6 +76,15 @@ public class VisualiseController {
 			Collections.sort(visualisation.getCategories(), CategoryVisualisationDTO.CATEGORY_COMPARATOR);
 		}
 		
+		return model;
+		
+	}
+	
+	@GetMapping("/clear")
+	public ModelAndView clearSession(ModelAndView model, SessionStatus status) {
+		
+		status.setComplete();
+		model.setViewName("redirect:/visualise/");
 		return model;
 		
 	}

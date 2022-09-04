@@ -7,6 +7,7 @@ public interface IDescriptionService {
 
 	Description get(String description);
 	Description getNextUnidentifiedDescription();
+	int getUnidentifiedDescriptionCount();
 	Description setCategory(SiftDTO dto);
 	
 }
