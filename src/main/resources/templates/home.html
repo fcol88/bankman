@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th:="http://www.thymeleaf.org">
+<head th:replace="fragments/base :: head('BankMan')"></head>
+
+<body>
+
+	<section class="hero is-fullheight is-primary" role="main">
+		<div th:replace="fragments/base :: navbar('home')"></div>
+		<div class="hero-body">
+			<div class="container">
+				<div class="columns is-centered">
+					<div class="column is-half">
+						<h1 class="title is-1 has-text-centered has-text-weight-bold">BankMan</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script th:replace="fragments/base :: scripts"></script>
+
+</body>
+
+</html>

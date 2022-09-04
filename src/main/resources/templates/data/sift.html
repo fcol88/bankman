@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th:="http://www.thymeleaf.org">
+<head th:replace="fragments/base :: head('Tell me about this item')"></head>
+
+<body>
+
+	<section class="hero is-fullheight" role="main">
+		<div th:replace="fragments/base :: navbar('csv')"></div>
+		<div class="hero-body">
+			<div class="container">
+				<div class="columns is-centered">
+					<div class="column is-one-third">
+						<th:block th:if="${description == null}">
+						<h1 class="title has-text-centered">Great news! You've categorised everything.</h1>
+						<div class="content has-text-centered">
+							<p>Now you can <a th:href="@{/visualise/}">have a look</a> at how it all stacks up.</p>
+						</div>
+						</th:block>
+						<form th:action="${form}" th:object="${sift}" method="POST" th:unless="${description == null}">
+							<div class="block">
+								<h1 class="title has-text-centered">Tell me about this description</h1>
+								
+								<h2 class="title is-4" th:text="${description.value}">Description</h2>
+								
+								<div class="content">
+									<p>What is this description likely to be when it comes up?
+										For example, "Deliveroo" is always going to be takeaways, so
+										put "Takeaways".</p>
+									<p>If you have something like "AMAZON UK" then that's a bit
+										more ambivalent. So you could either put that down as "Amazon"
+										and be done with it, or put it down as "Online Shopping" and
+										wait for me to get a bit smarter so I can break that down
+										further.</p>
+									<p>You can either add to an existing category, or a new
+										one.</p>
+								</div>
+							</div>
+							
+							<input type="hidden" th:field="*{descriptionId}">
+
+							<div class="field">
+								<label class="label">Choose an existing category</label>
+								<div class="control">
+									<div class="select is-large"
+										th:classappend="*{#fields.hasErrors('categoryId')} ? 'is-danger'">
+										<select name="categoryId">
+											<option value="" th:selected="*{categoryId == null}">New</option>
+											<option th:each="category : ${categories}"
+												th:text="${category.name}" th:value="${category.id}"
+												th:selected="*{categoryId} == ${category.id}">Category</option>
+										</select>
+									</div>
+								</div>
+								<p class="help is-danger"
+									th:if="*{#fields.hasErrors('categoryId')}"
+									th:errors="*{categoryId}">Category ID Error</p>
+							</div>
+
+							<div class="field">
+								<div class="control">
+									<label class="label">Enter a new category</label> <input
+										class="input is-large" type="text" placeholder="25 characters max"
+										th:classappend="*{#fields.hasErrors('newCategory')} ? 'is-danger'"
+										th:field="*{newCategory}">
+								</div>
+								<p class="help is-danger"
+									th:if="*{#fields.hasErrors('newCategory')}"
+									th:errors="*{newCategory}">Category Name Error</p>
+							</div>
+
+							<div class="field is-grouped is-grouped-centered">
+								<div class="control">
+									<button id="saveButton" class="button is-link">Save</button>
+								</div>
+								<div class="control">
+									<a id="cancelButton" th:href="@{/}"
+										class="button is-link is-light">Cancel</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script th:replace="fragments/base :: scripts"></script>
+
+</body>
+
+</html>

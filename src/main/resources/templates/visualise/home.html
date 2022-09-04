@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th:="http://www.thymeleaf.org">
+<head
+	th:replace="fragments/base :: head('How you spend your money | BankMan')"></head>
+
+<body>
+
+	<section class="hero is-fullheight is-primary" role="main">
+		<div th:replace="fragments/base :: navbar('visualise')"></div>
+		<div class="hero-body">
+			<div class="container">
+				<div class="columns is-centered">
+					<div class="column is-half">
+						<h1 class="title has-text-centered">How you spend your money</h1>
+						<form th:action="@{/visualise/}" method="GET">
+							<div class="columns is-centered">
+								<div class="column is-3">
+									<div class="field">
+										<label class="label has-text-centered">From</label>
+										<div class="control">
+											<input class="input" type="date" name="from"
+												th:value="${visualisation == null} ? ${param.from} : ${#temporals.format(visualisation.from, 'yyyy-MM-dd')}">
+										</div>
+									</div>
+								</div>
+								<div class="column is-3">
+									<div class="field">
+										<label class="label has-text-centered">To</label>
+										<div class="control">
+											<input class="input" type="date" name="to"
+												th:value="${visualisation == null} ? ${param.to} : ${#temporals.format(visualisation.to, 'yyyy-MM-dd')}">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="columns is-centered" th:unless="${message == null}">
+								<div class="column">
+									<p class="help is-danger has-text-centered"
+										th:text="${message}"></p>
+								</div>
+							</div>
+							<div class="columns is-centered">
+								<div class="column">
+									<div class="field is-grouped is-grouped-centered">
+										<div class="control">
+											<button id="saveButton" class="button is-link">Submit</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="columns">
+							<div class="column">
+								<div class="block"
+									th:if="${param.from != null && message == null && visualisation == null}">
+									<p>Oh. It looks like there's nothing to find between those
+										two dates. Do you want to try putting in some different dates?
+										Oh, and if you've put a later date in the "from" box...swap
+										them round. I'm not that smart yet.</p>
+								</div>
+							</div>
+						</div>
+						<th:block th:unless="${visualisation == null}">
+							<h2 class="title is-4 has-text-centered">
+								<th:block th:text="'&#163;' + ${visualisation.totalSpent}"></th:block>
+								spent between
+								<th:block
+									th:text="${#temporals.format(visualisation.from, 'dd/MM/yyyy')}"></th:block>
+								and
+								<th:block
+									th:text="${#temporals.format(visualisation.to, 'dd/MM/yyyy')}"></th:block>
+							</h2>
+							<table class="table is-striped is-fullwidth">
+								<thead>
+									<tr>
+										<th><a style="color: hsl(229deg, 53%, 53%);"
+											th:if="${param.sort == null || param.sort[0] != '1'}"
+											th:href="@{sort(sort=1)}">Category</a> <th:block
+												th:unless="${param.sort == null || param.sort[0] != '1'}">Category</th:block></th>
+										<th><a style="color: hsl(229deg, 53%, 53%);"
+											th:if="${param.sort == null || param.sort[0] != '0'}"
+											th:href="@{sort(sort=0)}">Amount Spent</a> <th:block
+												th:unless="${param.sort == null || param.sort[0] != '0'}">Amount Spent</th:block></th>
+										<th>Percentage of Total</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="category : ${visualisation.categories}">
+										<td class="is-centered" th:text="${category.category}"></td>
+										<td th:text="'&#163;'+${category.amountSpent}"></td>
+										<td
+											th:text="${#numbers.formatDecimal(category.percentageOfTotal*100, 1, 2, 'POINT') + '%'}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</th:block>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script th:replace="fragments/base :: scripts"></script>
+
+</body>
+
+</html>

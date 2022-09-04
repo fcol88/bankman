@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th:="http://www.thymeleaf.org">
+<head th:replace="fragments/base :: head('Upload a file')"></head>
+
+<body>
+
+	<section class="hero is-fullheight" role="main">
+		<div th:replace="fragments/base :: navbar('csv')"></div>
+		<div class="hero-body">
+			<div class="container">
+				<div class="columns is-centered">
+					<div class="column is-one-third">
+						<form th:action="${form}" method="POST"
+							enctype="multipart/form-data">
+							<div class="block">
+								<h1 class="title has-text-centered">Upload a file</h1>
+								<div class="content">
+									<p>The file needs to be a CSV. You'll probably get it like
+										this from your bank, but just in case...now you know.</p>
+
+									<p>Also, it needs 4 columns for it to work. The names of
+										the columns must be exactly like they are below. These are:</p>
+
+									<ul>
+										<li>Date (in the format (dd/mm/yyyy)</li>
+										<li>Description (the main bit e.g., PAYPAL PAYMENT)</li>
+										<li>Amount (e.g., &#163;19.99)</li>
+										<li>Balance (e.g., &#163;845.23)</li>
+									</ul>
+
+									<p>The balance isn't used in the calculation, it's just
+										used to make sure you don't add any items twice.</p>
+								</div>
+							</div>
+
+							<div class="field">
+								<div class="file is-centered has-name is-boxed" id="file-js">
+									<label class="file-label"> <input class="file-input"
+										type="file" name="file"> <span class="file-cta">
+											<span class="file-icon"> <em class="fas fa-upload"></em>
+										</span> <span class="file-label"> Choose a file... </span>
+									</span> <span class="file-name"> Filename... </span>
+									</label>
+								</div>
+							</div>
+							<div class="field is-grouped is-grouped-centered">
+								<div class="control">
+									<button id="saveButton" class="button is-link">Upload</button>
+								</div>
+								<div class="control">
+									<a id="cancelButton" th:href="@{/}"
+										class="button is-link is-light">Cancel</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script th:replace="fragments/base :: scripts"></script>
+
+	<script>
+		  const fileInput = document.querySelector('#file-js input[type=file]');
+		  fileInput.onchange = () => {
+		    if (fileInput.files.length > 0) {
+		      const fileName = document.querySelector('#file-js .file-name');
+		      fileName.textContent = fileInput.files[0].name;
+		    }
+		  }
+	</script>
+
+</body>
+
+</html>

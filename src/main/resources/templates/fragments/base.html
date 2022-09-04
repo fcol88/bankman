@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title th:text="${title}">BankMan</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="stylesheet" th:href="@{/css/bulma-calendar.min.css}">
+<script defer
+	src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+
+<nav th:fragment="paginator(page, pageNumbers, url)"
+	class="pagination is-centered" role="navigation"
+	aria-label="pagination" th:if="${page.totalPages &gt; 1}">
+	<a id="prevLink" class="pagination-previous"
+		th:disabled="${page.number==0}"
+		th:href="${page.number==0} ? '#' : @{${url}(page=${page.number},size=${page.size})}">Previous</a>
+	<a id="nextLink" class="pagination-next"
+		th:disabled="${page.number + 1==page.totalPages}"
+		th:href="${page.number + 1==page.totalPages} ? '#' : @{${url}(page=${page.number + 2},size=${page.size})}">Next
+		page</a>
+	<ul class="pagination-list">
+		<li th:if="${page.number &gt; 1}"><a id="firstLink"
+			class="pagination-link" aria-label="Goto page 1"
+			th:href="@{${url}(page=1,size=${page.size})}">1</a></li>
+		<li th:if="${page.number &gt; 2}"><span
+			class="pagination-ellipsis">&hellip;</span></li>
+		<li th:each="pageNumber : ${pageNumbers}"
+			th:if="${pageNumber &gt;= page.number and pageNumber &lt;= page.number + 2}">
+			<a th:id="'page'+${pageNumber}+'Link'" class="pagination-link"
+			th:aria-label="'Goto page ' + ${pageNumber}" th:text="${pageNumber}"
+			th:classappend="${pageNumber == page.number + 1} ? is-current"
+			th:href="@{${url}(page=${pageNumber},size=${page.size})}"></a>
+		</li>
+		<li th:unless="${page.number + 3 &gt;= page.totalPages}"><span
+			class="pagination-ellipsis">&hellip;</span></li>
+		<li th:unless="${page.number + 2 &gt;= page.totalPages}"><a
+			id="lastLink" class="pagination-link"
+			th:aria-label="'Goto page ' + ${page.totalPages}"
+			th:href="@{${url}(page=${page.totalPages},size=${page.size})}"
+			th:text="${page.totalPages}"></a></li>
+	</ul>
+</nav>
+
+<div th:fragment="navbar(selected)" class="hero-head">
+	<nav class="navbar" aria-label="Navigation">
+		<div class="container">
+			<div class="navbar-brand">
+				<a class="navbar-item" th:href="@{/}"> <span id="logoLink"
+					class="title">BankMan</span>
+				</a> <span class="navbar-burger" data-target="navbarMenuHeroA"> <span></span>
+					<span></span> <span></span>
+				</span>
+			</div>
+			<div id="navbarMenuHeroA" class="navbar-menu">
+				<div class="navbar-end">
+					<a id="homeLink" class="navbar-item" th:href="@{/}"
+						th:classappend="${selected == 'home'} ? is-active">Home</a> <a
+						id="csvLink" class="navbar-item" th:href="@{/csv/form}"
+						th:classappend="${selected == 'csv'} ? is-active">Upload a file</a> <a id="dataLink" class="navbar-item"
+						th:href="@{/data/sift}"
+						th:classappend="${selected == 'data'} ? is-active">Manage data</a>
+						<a id="visualiseLink" class="navbar-item"
+						th:href="@{/visualise/}"
+						th:classappend="${selected == 'visualise'} ? is-active">Visualisations</a>
+				</div>
+			</div>
+		</div>
+	</nav>
+</div>
+
+<th:block th:fragment="scripts">
+
+	<script th:src="@{/js/burger.js}"></script>
+
+</th:block>
+
+</html>
